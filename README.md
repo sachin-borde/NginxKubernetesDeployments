@@ -1,6 +1,11 @@
 #############################################################################################
 
-1. Prerequisites Setup <a name="prerequisites-setup"></a>
+✅ Kubernetes Multi-Node Cluster Setup Guide (WSL Ubuntu)
+*Simulated production environment using Kind - Lightweight & WSL2 Compatible*
+
+#############################################################################################
+
+🔧 1. Prerequisites Setup
 
 1.1 Docker Installation
 
@@ -9,6 +14,7 @@ sudo apt install -y docker.io
 sudo usermod -aG docker $USER
 newgrp docker
 sudo service docker start
+systemctl status docker
 
 1.2 Kubernetes Tools
 
@@ -23,36 +29,49 @@ sudo mv ./kind /usr/local/bin/kind
 
 #############################################################################################
 
-2. Cluster Creation <a name="cluster-creation"></a>
+🔧 2. Cluster Creation
 
 2.1 Cluster Configuration
 
-Create cluster-config.yaml:
+Create cluster-config.yaml
 
 2.2 Start Cluster
 
 kind create cluster --name nginx-cluster --config cluster-config.yaml
+
 kubectl get nodes
 
 #############################################################################################
 
-3. NGINX Deployment <a name="nginx-deployment"></a>
+🌐 3. NGINX Deployment
 
 3.1 Deployment File
 
-Create nginx-deployment.yaml:
+Create nginx-deployment.yaml
 
 3.2 Service Exposure
 
-Create nginx-service.yaml:
+Create nginx-service.yaml
 
 3.3 Apply Configuration
 
 kubectl apply -f nginx-deployment.yaml
 kubectl apply -f nginx-service.yaml
-kubectl get svc
 
-3.4 Access Application
+kubectl get deployments
+kubectl get svc
+kubectl get pods
+
+kubectl delete -f nginx-deployment.yaml
+kubectl delete -f nginx-service.yaml
+
+3.4 Testing time (Delete pods and see eitherit will reappear or not)
+
+kubectl delete pod <Pod name>
+
+kubectl delete pods  <Pod name>  <Pod name>  <Pod name>
+
+3.5 Access Application
 
 kubectl port-forward service/nginx-service 8080:80
 
@@ -60,7 +79,7 @@ Visit http://localhost:8080
 
 #############################################################################################
 
-4. Kubernetes Dashboard <a name="kubernetes-dashboard"></a>
+🚀 4. Kubernetes Dashboard
 
 4.1 Dashboard Installation
 
@@ -68,7 +87,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/a
 
 4.2 Admin Account Setup
 
-Create dashboard-admin.yaml:
+Create dashboard-admin.yaml
 
 4.3 Access Dashboard
 
@@ -80,7 +99,7 @@ Access via: http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/service
 
 #############################################################################################
 
-5. Cleanup Procedures <a name="cleanup-procedures"></a>
+🧼 5. Cleanup Procedures
 
 5.1 Cluster Removal
 
@@ -98,7 +117,7 @@ sudo groupdel docker
 
 #############################################################################################
 
-6. Architecture Components <a name="architecture-components"></a>
+🧱 6. Architecture Components
 
 Component				 Role
 kube-apiserver			 - Cluster API endpoint
